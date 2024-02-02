@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Diagram</title>
+</head>
+<style>
+    #diagram {
+        margin: 20px 0;
+        height: 90vh;
+    }
+
+    .control {
+        border-color: green;
+        border-radius: 10px;
+        border-width: 2px;
+        border-style: solid; 
+        width: 120px;
+        height: 120px;
+        text-align: center;
+        cursor: move;
+        /* height: fit-content; */
+        height: -moz-max-content;
+        background-color: white;
+        rotate: 45deg;
+    }
+
+    .controlButton {
+        border-color: green;
+        border-radius: 10px;
+        border-width: 2px;
+        border-style: solid;
+        width: 120px;
+        text-align: center;
+        cursor: move;
+        height: fit-content;
+        height: -moz-max-content;
+        background-color: white;
+        position: absolute;
+    }
+
+    #diagram .control {
+        position: absolute;
+    }
+</style>
+<script src="jsplumb.min.js"></script>
+<body>
+    <div id="diagram" style="height: 90vh; position: relative">
+        <div id="control1" style="left: 400px; top: 0px;" class="control text-center">
+          <div>
+            <p style="rotate: -45deg; margin-top: 23px; text-align: left;">For whom am I writing the log?</p>
+          </div>
+        </div>                        
+        <div id="control2" class="control" style="left: 0px; top: 200px">
+          <p style="rotate: -45deg; margin-top: 23px; text-align: left;">Do I need to log state of variables?</p>
+        </div>
+        <div id="control3" class="control" style="left: 800px; top: 200px">
+          <p style="rotate: -45deg; margin-top: 23px; text-align: left;">Do I log an unwanted state?</p>
+        </div>
+        <div id="control4" class="control" style="left: 800px; top: 430px">
+          <p style="rotate: -45deg; margin-top: 23px; text-align: left;">Can the process continue with unwanted state?</p>
+        </div>
+        <div id="control5" class="control" style="left: 400px; top: 430px">
+          <p style="rotate: -45deg; margin-top: 23px; text-align: center;">Can the application continue?</p>
+        </div>
+
+        <div id="control6" class="controlButton" style="left: 0px; top: 650px; background-color: rgb(250, 217, 213);">Error</div>
+        <div id="control7" class="controlButton" style="left: 490px; top: 248px; background-color: rgb(218, 232, 252);">Info</div>
+        <div id="control8" class="controlButton" style="left: 300px; top: 248px; background-color: rgb(255, 242, 204);">Debug</div>
+        <div id="control9" class="controlButton" style="left: 0px; top: 415px; background-color: rgb(213, 232, 212);">Trace</div>
+        <div id="control10" class="controlButton" style="left: 800px; top: 650px; background-color: rgb(227, 200, 0);">Warning</div>
+        <div id="control11" class="controlButton" style="left: 400px; top: 650px; background-color: rgb(213, 115, 157);">Fatal</div>
+    </div>
+</body>
+<script>
+    let instance = jsPlumb.getInstance({});
+    instance.setContainer("diagram");
+
+    instance.draggable("control1", {"containment": true});
+    instance.draggable("control2", {"containment": true});
+    instance.draggable("control3", {"containment": true});
+    instance.draggable("control4", {"containment": true});
+    instance.draggable("control5", {"containment": true});
+
+    instance.draggable("control6", {"containment": true});
+    instance.draggable("control7", {"containment": true});
+    instance.draggable("control8", {"containment": true});
+    instance.draggable("control9", {"containment": true});
+    instance.draggable("control10", {"containment": true});
+    instance.draggable("control11", {"containment": true});
+    
+    instance.connect({ source: "control1", target: "control2", anchors: [[ -0.2, 0.5, -1, 0 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "Developer", location: 0.8 } ]] });
+    instance.connect({ source: "control1", target: "control3", anchors: [[ 1.2, 0.5, 1, 0], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "System Operators", location: 0.8 } ]] });
+    instance.connect({ source: "control3", target: "control4", anchors: [[ 0.5, 1.2, 0, 1 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "Yes" } ]] });
+    instance.connect({ source: "control4", target: "control5", anchors: [[ -0.2, 0.5, -1, 0 ], [ 1.2, 0.5, 1, 0]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "No" } ]] });
+
+    instance.connect({ source: "control2", target: "control8", anchors: [[ 1.2, 0.5, 1, 0], [ -0.03, 0.5, -1, 0 ]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "Yes" } ]] });
+    instance.connect({ source: "control3", target: "control7", anchors: [[ -0.2, 0.5, -1, 0 ], [ 1.02, 0.5, 1, 0]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "No" } ]] });
+    instance.connect({ source: "control2", target: "control9", anchors: [[ 0.5, 1.2, 0, 1 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "No" } ]] });
+    instance.connect({ source: "control5", target: "control11", anchors: [[ 0.5, 1.2, 0, 1 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "No" } ]] });
+    instance.connect({ source: "control5", target: "control6", anchors: [[ -0.2, 0.5, -1, 0 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "Yes" } ]] });
+    instance.connect({ source: "control4", target: "control10", anchors: [[ 0.5, 1.2, 0, 1 ], [0.5, -0.2, 0, -1]], endpoint: "Blank", endpointStyle: { fill: "white" }, connector: "Flowchart", paintStyle: { stroke: "gray", strokeWidth: 1 }, cornerRadius: 1, overlays: [["Arrow", { location: 1 }], [ "Label", { label: "Yes" } ]] });
+</script>
+</html>
